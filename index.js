@@ -27,10 +27,50 @@ function update_data(){
             sheet_data.push(element)
         });
         current_question_num = sheet_data[0][4]
+
+        if(current_question_num != '1'){
+            document.querySelector('.lock_bg').classList.add('unlocked')
+            document.querySelector('#main_thingy').classList.add('welcome')
+        }else{
+            document.querySelector('.lock_bg').classList.remove('unlocked')
+            document.querySelector('#main_thingy').classList.remove('welcome')
+        }
+
+
         let match = sheet_data.find(element => element[0] === current_question_num);
         if(match){
             let content = match[1];
             document.querySelector('.header').textContent = content;
+
+            let media = match[3].split(' ');
+            console.log(media)
+            if(media[0] != 'N/A'){
+                document.querySelector('.media_src').innerHTML = ''
+                switch(media[1]){
+                    case 'image':
+                        const img = document.createElement('img');
+                        img.src = media[0]
+                        img.className = 'img_media_src'
+                        document.querySelector('.media_src').append(img)
+                        break
+                    case 'video':
+                        const video = document.createElement('video');
+                        video.src = media[0]
+                        video.controls = true;
+                        video.className = 'img_media_src'
+                        document.querySelector('.media_src').append(video)
+                        break
+                    case 'audio':
+                        const audio = document.createElement('audio');
+                        audio.src = media[0]
+                        audio.controls = true;
+                        audio.className = 'img_media_src'
+                        document.querySelector('.media_src').append(audio)
+                        break
+                }
+            }else{
+                document.querySelector('.img_media_src').src = ''
+            }
         }else{
             document.querySelector('.header').textContent = "Error 404: Question Not Found :d";
         }
@@ -70,6 +110,12 @@ function admin_command(value){
             console.log("Restarted!")
             break
         case 'updateTo':
+            const bar = document.getElementById('loading-bar');
+            const fill = document.getElementById('loading-fill');
+
+            bar.style.opacity = '1';
+            fill.style.width = '40%';
+
             fetch('https://script.google.com/macros/s/AKfycbzgx59qtMvc1b-WYmAQvZi9sdwcw4e3NtapA5x3QKr72hrIExJSnGxtn-qzdH8wJtgI/exec', {
                 method: 'POST',
                 headers: {
@@ -78,9 +124,18 @@ function admin_command(value){
                 body: `cell=${encodeURIComponent(key)}&value=${encodeURIComponent(first_val)}`
             }).then(res => res.text()).then(msg => {
                 console.log(msg);
+                fill.style.width = '100%'; 
             }).catch(err => {
                 console.error('Error updating cell:', err);
+                fill.style.background = '#5CE65C'; // Red fill if error
+                fill.style.width = '100%';
             }).finally(() => {
+                setTimeout(() => {
+                    fill.style.width = '0%';
+                    bar.style.opacity = '0';
+                    fill.style.background = 'linear-gradient(90deg, #4facfe, #00f2fe)';
+                }, 600);
+
                 update_data();
             });
             break
@@ -99,34 +154,53 @@ function parseValue(value) {
 document.querySelector('#answer_form').addEventListener('submit', (element) => {
     element.preventDefault()
     value = document.querySelector('.answer').value
+
     if(value.includes('_!')){
         admin_command(value)
     }
 
     document.querySelector('.answer').value = ''
+    correct = false
+    current_question_num = sheet_data[0][4]
+    console.log(sheet_data[current_question_num][2])
+    console.log(value)
+    if(sheet_data[current_question_num][2] == value){
+        correct = true
+    }
 
-    sheet_data.forEach(row => {
-        if(row.includes(value)){
-            // console.log("Correct!")
-            counter = Number(sheet_data[0][4]) + 1
-            newValue = counter.toString()
-            sheet_data[0][4] = counter.toString()
+    if(correct === true){
+        // console.log("Correct!")
+        counter = Number(sheet_data[0][4]) + 1
+        newValue = counter.toString()
+        sheet_data[0][4] = counter.toString()
 
-            fetch('https://script.google.com/macros/s/AKfycbzgx59qtMvc1b-WYmAQvZi9sdwcw4e3NtapA5x3QKr72hrIExJSnGxtn-qzdH8wJtgI/exec', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `value=${encodeURIComponent(newValue)}`
-            }).then(res => res.text())
-            .then(msg => msg = msg)
-            .catch(err => err = err)
-            //console.error('Error updating cell:', err)
-            .finally(() => {
-                update_data()
-            });
-        }
-    });
+        fetch('https://script.google.com/macros/s/AKfycbzgx59qtMvc1b-WYmAQvZi9sdwcw4e3NtapA5x3QKr72hrIExJSnGxtn-qzdH8wJtgI/exec', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `value=${encodeURIComponent(newValue)}`
+        }).then(res => res.text())
+        .then(msg => {
+            msg = msg
+        })
+        .catch(err => {
+            err = err
+        })
+        //console.error('Error updating cell:', err)
+        .finally(() => {
+            document.querySelector('.answer_bg').classList.add('correct')
+            setTimeout(function() {
+                document.querySelector('.answer_bg').classList.remove('correct')
+            }, 500);
+            update_data()
+        });
+    }else{
+        document.querySelector('.answer_bg').classList.add('incorrect')
+        setTimeout(function() {
+            document.querySelector('.answer_bg').classList.remove('incorrect')
+        }, 500);
+    }
 });
 
 // set initial conditions //

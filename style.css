@@ -13,6 +13,37 @@ body {
     justify-content: center; align-items: center;
 }
 
+.answer_bg{
+  position: absolute; top: 0; left: 0;
+  height: 100%; width: 100%;
+  z-index: 3;
+
+  opacity: 0;
+  transition: all .5s ease-in-out;
+}
+.answer_bg.correct{
+  background-color: #5CE65C;
+  opacity: 1;
+}
+.answer_bg.incorrect{
+  background-color: #FF0000;
+  opacity: 1;
+}
+
+.lock_bg{
+  position: absolute; top: 0; left: 0;
+  height: 100%; width: 100%;
+  z-index: 2;
+  background-color: #141414;
+  opacity: 1;
+
+  transition: all .2s ease-in-out;
+}
+
+.lock_bg.unlocked{
+  opacity: 0;
+}
+
 @keyframes gradient {
     0% {
         background-position: 0% 50%;
@@ -25,17 +56,32 @@ body {
     }
 }
 
+#answer_form{
+  z-index: 5;
+}
+
+.media_src{
+  z-index: 4;
+}
+
 p{
     font-family: 'Jersey 10', sans-serif;
     margin: 50px; padding: 0;
     font-size: 64px;
     text-align: center;
     color: white;
+    opacity: 0;
+    transition: all .5s ease-in-out
 }p.header{
     font-size: 48px;
+    z-index: 5;
+    opacity: 1;
 }p.subheader{
     font-size: 32px;
     margin: 0px 0px 10px 0px;
+    opacity: 1;
+}p.welcome{
+    opacity: 1;
 }
 
 /* The input bar styles */
@@ -89,4 +135,23 @@ p{
 
 .growing-search .submit button:hover {
   color: #3498db;
+}
+
+/* Container bar */
+.loading-bar {
+  margin: 20px 0 0 0;
+  width: 500px;
+  height: 10px;
+  background-color: #eee;
+  overflow: hidden;
+  opacity: 0;
+  z-index: 5;
+}
+
+/* The animated fill bar */
+.loading-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  transition: width 0.4s ease;
 }
