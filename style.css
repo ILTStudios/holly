@@ -1,0 +1,92 @@
+html, body {
+  width: 100%;
+  height:100%;
+  margin: 0; padding: 0;
+}
+
+body {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 500% 500%;
+    animation: gradient 15s ease infinite;
+
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+p{
+    font-family: 'Jersey 10', sans-serif;
+    margin: 50px; padding: 0;
+    font-size: 64px;
+    text-align: center;
+    color: white;
+}p.header{
+    font-size: 48px;
+}p.subheader{
+    font-size: 32px;
+    margin: 0px 0px 10px 0px;
+}
+
+/* The input bar styles */
+
+.growing-search {
+  padding: 5px 5px 5px 7px;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.growing-search div {
+  display: inline-block;
+  font-size: 12px;
+}
+
+.growing-search .input input {
+  margin-right: 0;
+  border: none;
+  font-size: inherit;
+  transition: width 200ms;
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  width: 100px;
+  color: black;
+  border-bottom: 1px solid #eee;
+}
+
+.growing-search .input input:focus {
+    width: 150px;
+}
+
+.growing-search .submit button {
+  margin-left: 0;
+  border: none;
+  font-size: 1.15em;
+  color: #aaa;
+  background-color: #fff;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  transition: color 200ms;
+}
+
+.growing-search .input input:hover, .growing-search .submit button:hover {
+  cursor: pointer;
+}
+
+.growing-search .input input:focus, .growing-search .submit button:focus {
+  outline: none;
+}
+
+.growing-search .submit button:hover {
+  color: #3498db;
+}
