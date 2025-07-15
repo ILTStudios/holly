@@ -1,6 +1,6 @@
 const API_KEY = 'AIzaSyAUqkn7UBJZ6rOHibAZSj8C_UuXerEnnDE';
 const SPREADSHEET_ID = '1dIv5yxlqlXs0ZcR9P8dzZWKdqVDGiBVvK73NMXuLMNo';
-const range = 'Sheet1!A1:E7';
+const range = 'Sheet1!A1:E20';
 
 let sheet_data = []
 
