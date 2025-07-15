@@ -1,6 +1,6 @@
 const API_KEY = 'AIzaSyAUqkn7UBJZ6rOHibAZSj8C_UuXerEnnDE';
 const SPREADSHEET_ID = '1dIv5yxlqlXs0ZcR9P8dzZWKdqVDGiBVvK73NMXuLMNo';
-const range = 'Sheet1!A1:E20';
+const range = 'Sheet1!A1:E7';
 
 let sheet_data = []
 
@@ -43,7 +43,7 @@ function update_data(){
             document.querySelector('.header').textContent = content;
 
             let media = match[3].split(' ');
-            console.log(media)
+            // console.log(media)
             if(media[0] != 'N/A'){
                 document.querySelector('.media_src').innerHTML = ''
                 switch(media[1]){
@@ -94,8 +94,6 @@ function admin_command(value){
             params[key] = parseValue(value);
         });
     }
-    const entries = Object.entries(params)
-    const [key, first_val] = entries[0]
 
     if (!match) {
         console.log("Invalid command format.");
@@ -106,10 +104,17 @@ function admin_command(value){
         case 'update':
             update_data()
             break
-        case 'restart':
-            console.log("Restarted!")
+        case 'view':
+            document.querySelector('.header').innerHTML = 'Use <a href="https://photos.google.com/u/1/share/AF1QipOXqYf_r7FACGZKZ1PXdyGNNUM1eCiL02wHkcNPII0mCu6n8r_zgYj94XmlYcnaAQ?key=NHJQczZpdDZ5S0VkS2VSdzRnUTdWaDZSb05nSVB3" target="_blank">this</a> link to view all documents.';
             break
         case 'updateTo':
+            const entries = Object.entries(params);
+            if (entries.length === 0) {
+                console.error('No parameters provided for updateTo.');
+                return;
+            }
+            const [key, first_val] = entries[0];
+
             const bar = document.getElementById('loading-bar');
             const fill = document.getElementById('loading-fill');
 
@@ -158,18 +163,18 @@ document.querySelector('#answer_form').addEventListener('submit', (element) => {
     if(value.includes('_!')){
         admin_command(value)
     }
-
+    if(value == 'GHTL4S'){
+        document.querySelector('.header').innerHTML = 'Click <a href="https://docs.google.com/spreadsheets/d/1dIv5yxlqlXs0ZcR9P8dzZWKdqVDGiBVvK73NMXuLMNo/edit?usp=sharing" target="_blank">Here</a>';
+        return
+    }
     document.querySelector('.answer').value = ''
     correct = false
     current_question_num = sheet_data[0][4]
-    console.log(sheet_data[current_question_num][2])
-    console.log(value)
     if(sheet_data[current_question_num][2] == value){
         correct = true
     }
 
     if(correct === true){
-        // console.log("Correct!")
         counter = Number(sheet_data[0][4]) + 1
         newValue = counter.toString()
         sheet_data[0][4] = counter.toString()
