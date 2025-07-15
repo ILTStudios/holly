@@ -31,9 +31,11 @@ function update_data(){
         if(current_question_num != '1'){
             document.querySelector('.lock_bg').classList.add('unlocked')
             document.querySelector('#main_thingy').classList.add('welcome')
+            document.querySelector('#main_thingy').classList.remove('remove')
         }else{
             document.querySelector('.lock_bg').classList.remove('unlocked')
             document.querySelector('#main_thingy').classList.remove('welcome')
+            document.querySelector('#main_thingy').classList.add('remove')
         }
 
 

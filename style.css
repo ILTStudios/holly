@@ -32,7 +32,7 @@ body {
 
 .lock_bg{
   position: absolute; top: 0; left: 0;
-  height: 100%; width: 100%;
+  height: 100vh; width: 100%;
   z-index: 2;
   background-color: #141414;
   opacity: 1;
@@ -71,7 +71,7 @@ p{
     text-align: center;
     color: white;
     opacity: 0;
-    transition: all .5s ease-in-out
+    transition: all .5s ease-in-out;
 }p.header{
     font-size: 48px;
     z-index: 5;
@@ -82,6 +82,9 @@ p{
     opacity: 1;
 }p.welcome{
     opacity: 1;
+}
+p.remove{
+  position: absolute;
 }
 
 /* The input bar styles */
